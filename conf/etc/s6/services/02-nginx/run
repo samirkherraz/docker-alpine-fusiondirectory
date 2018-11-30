@@ -1,2 +1,2 @@
 #!/usr/bin/with-contenv sh
-nginx -g 'daemon off;'
+service-handler "NGINX" "nginx -g 'daemon off;'"

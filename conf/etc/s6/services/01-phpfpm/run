@@ -1,2 +1,2 @@
 #!/usr/bin/with-contenv sh
-php-fpm7 -F
+service-handler "PHP-FPM" "php-fpm7 -F"
