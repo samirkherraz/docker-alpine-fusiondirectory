@@ -51,3 +51,10 @@ olcDbDirectory: /var/lib/openldap
 olcRootDN: cn=admin,{BASE_DN}
 olcRootPW:  {ADMIN_PASS}
 olcDbIndex: objectClass eq
+
+
+dn: olcOverlay=memberof,olcDatabase=mdb,cn=config
+objectClass: olcOverlayConfig
+objectClass: olcMemberOf
+olcOverlay: memberof
+
