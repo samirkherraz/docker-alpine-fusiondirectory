@@ -2,13 +2,14 @@
 
 killall slapd
 
+rm /tmp/*.ldif
+
 chown -R ldap:ldap /var/lib/openldap
 chown -R ldap:ldap /etc/openldap
 chown -R ldap:ldap /run/openldap
 chown -R nginx:nginx /var/www/fusiondirectory/html 
 
 chmod 777 /tmp
-
 
 mkdir -p /tmp/state
 touch /tmp/state/10-openldap-init
