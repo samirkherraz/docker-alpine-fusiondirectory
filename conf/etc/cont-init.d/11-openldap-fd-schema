@@ -1,0 +1,610 @@
+#!/usr/bin/with-contenv bash
+
+
+FUSIONDIRECTORY_INSTALLED="/etc/openldap/state/fusiondirectory" 
+
+
+if [ ! -e ${FUSIONDIRECTORY_INSTALLED} ] || [ "$REAPPLY_PLUGIN_SCHEMAS" = "TRUE" ] || [ "$REAPPLY_PLUGIN_SCHEMAS" = "true" ];  then
+  if [ -z "$BASE_DN" ]; then
+    BASE_DN="dc="$( echo $DOMAIN | sed -e "s/\./,dc=/g" )
+  fi
+
+
+  PLUGIN_ALIAS=${PLUGIN_ALIAS:-"FALSE"}
+  PLUGIN_APPLICATIONS=${PLUGIN_APPLICATIONS:-"FALSE"}
+  PLUGIN_ARGONAUT=${PLUGIN_ARGONAUT:-"FALSE"}
+  PLUGIN_AUDIT=${PLUGIN_AUDIT:-"FALSE"}
+  PLUGIN_AUTOFS=${PLUGIN_AUTOFS:-"FALSE"}
+  PLUGIN_CERTIFICATES=${PLUGIN_CERTIFICATES:-"FALSE"}
+  PLUGIN_COMMUNITY=${PLUGIN_COMMUNITY:-"FALSE"}
+  PLUGIN_CYRUS=${PLUGIN_CYRUS:-"FALSE"}
+  PLUGIN_DEBCONF=${PLUGIN_DEBCONF:-"FALSE"}
+  PLUGIN_DEVELOPERS=${PLUGIN_DEVELOPERS:-"FALSE"}
+  PLUGIN_DHCP=${PLUGIN_DHCP:-"FALSE"}
+  PLUGIN_DNS=${PLUGIN_DNS:-"FALSE"}
+  PLUGIN_DOVECOT=${PLUGIN_DOVECOT:-"FALSE"}
+  PLUGIN_DSA=${PLUGIN_DSA:-"FALSE"}
+  PLUGIN_EJBCA=${PLUGIN_EJBCA:-"FALSE"}
+  PLUGIN_FAI=${PLUGIN_FAI:-"FALSE"}
+  PLUGIN_FREERADIUS=${PLUGIN_FREERADIUS:-"FALSE"}
+  PLUGIN_FUSIONINVENTORY=${PLUGIN_FUSIONINVENTORY:-"FALSE"}
+  PLUGIN_GPG=${PLUGIN_GPG:-"FALSE"}
+  PLUGIN_IPMI=${PLUGIN_IPMI:-"FALSE"}
+  PLUGIN_LDAPDUMP=${PLUGIN_LDAPDUMP:-"TRUE"}
+  PLUGIN_LDAPMANAGER=${PLUGIN_LDAPMANAGER:-"TRUE"}
+  PLUGIN_MAIL=${PLUGIN_MAIL:-"TRUE"}
+  PLUGIN_MIXEDGROUPS=${PLUGIN_MIXEDGROUPS:-"FALSE"}
+  PLUGIN_NAGIOS=${PLUGIN_NAGIOS:-"FALSE"}
+  PLUGIN_NETGROUPS=${PLUGIN_NETGROUPS:-"FALSE"}
+  PLUGIN_NEWSLETTER=${PLUGIN_NEWSLETTER:-"FALSE"}
+  PLUGIN_OPSI=${PLUGIN_OPSI:-"FALSE"}
+  PLUGIN_PERSONAL=${PLUGIN_PERSONAL:-"TRUE"}
+  PLUGIN_POSIX=${PLUGIN_POSIX:-"FALSE"}
+  PLUGIN_POSTFIX=${PLUGIN_POSTFIX:-"FALSE"}
+  PLUGIN_PPOLICY=${PLUGIN_PPOLICY:-"FALSE"}
+  PLUGIN_PUPPET=${PLUGIN_PUPPET:-"FALSE"}
+  PLUGIN_PUREFTPD=${PLUGIN_PUREFTPD:-"FALSE"}
+  PLUGIN_QUOTA=${PLUGIN_QUOTA:-"FALSE"}
+  PLUGIN_RENATER_PARTAGE=${PLUGIN_RENATER_PARTAGE:-"FALSE"}
+  PLUGIN_REPOSITORY=${PLUGIN_REPOSITORY:-"FALSE"}
+  PLUGIN_SAMBA=${PLUGIN_SAMBA:-"FALSE"}
+  PLUGIN_SOGO=${PLUGIN_SOGO:-"FALSE"}
+  PLUGIN_SPAMASSASSIN=${PLUGIN_SPAMASSASSIN:-"FALSE"}
+  PLUGIN_SQUID=${PLUGIN_SQUID:-"FALSE"}
+  PLUGIN_SSH=${PLUGIN_SSH:-"FALSE"}
+  PLUGIN_SUBCONTRACTING=${PLUGIN_SUBCONTRACTING:-"FALSE"}
+  PLUGIN_SUDO=${PLUGIN_SUDO:-"FALSE"}
+  PLUGIN_SUPANN=${PLUGIN_SUPANN:-"FALSE"}
+  PLUGIN_SYMPA=${PLUGIN_SYMPA:-"FALSE"}
+  PLUGIN_SYSTEMS=${PLUGIN_SYSTEMS:-"FALSE"}
+  PLUGIN_USER_REMINDER=${PLUGIN_USER_REMINDER:-"FALSE"}
+  PLUGIN_WEBLINK=${PLUGIN_WEBLINK:-"FALSE"}
+  PLUGIN_WEBSERVICE=${PLUGIN_WEBSERVICE:-"FALSE"}
+
+  if [[ "$PLUGIN_AUDIT" != "FALSE" ]] && [[ "$PLUGIN_AUDIT" != "false" ]];  then
+    export PLUGIN_ARGONAUT=TRUE
+    ENABLE_AUDIT_CLEANUP=${ENABLE_AUDIT_CLEANUP:"TRUE"}
+    AUDIT_CLEANUP_CRON_EXP=${AUDIT_CLEANUP_CRON_EXP:-"0 0 * * *"}
+    if [[ "$AUDIT_CLEANUP" != "FALSE" ]] && [[ "$AUDIT_CLEANUP" != "false" ]];  then
+    	echo "** [fusiondirectory] Setting Audit Cleanup Script"
+        echo $AUDIT_CLEANUP_CRON_EXP " /usr/sbin/argonaut-clean-audit >/dev/null 2>&1" >> /assets/cron/crontab.txt
+    fi
+  fi
+
+  
+  if [[ "$PLUGIN_LDAPDUMP" != "FALSE" ]] && [[ "$PLUGIN_LDAPDUMP" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_LDAPMANAGER" != "FALSE" ]] && [[ "$PLUGIN_LDAPMANAGER" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_USER_REMINDER" != "FALSE" ]] && [[ "$PLUGIN_USER_REMINDER" != "false" ]];  then
+    export PLUGIN_ARGONAUT=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_WEBSERVICE" != "FALSE" ]] && [[ "$PLUGIN_WEBSERVICE" != "false" ]];  then
+    :
+  fi
+
+ 
+  
+  if [[ "$PLUGIN_CYRUS" != "FALSE" ]] && [[ "$PLUGIN_CYRUS" != "false" ]];  then
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_DOVECOT" != "FALSE" ]] && [[ "$PLUGIN_DOVECOT" != "false" ]];  then
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_POSTFIX" != "FALSE" ]] && [[ "$PLUGIN_POSTFIX" != "false" ]];  then
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_SOGO" != "FALSE" ]] && [[ "$PLUGIN_SOGO" != "false" ]];  then
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_SYMPA" != "FALSE" ]] && [[ "$PLUGIN_SYMPA" != "false" ]];  then
+    export PLUGIN_ALIAS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_SPAMASSASSIN" != "FALSE" ]] && [[ "$PLUGIN_SPAMASSASSIN" != "false" ]];  then
+    export PLUGIN_MAIL=TRUE
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+ 
+  
+  if [[ "$PLUGIN_AUTOFS" != "FALSE" ]] && [[ "$PLUGIN_AUTOFS" != "false" ]];  then
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_DSA" != "FALSE" ]] && [[ "$PLUGIN_DSA" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_DHCP" != "FALSE" ]] && [[ "$PLUGIN_DHCP" != "false" ]];  then
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_DNS" != "FALSE" ]] && [[ "$PLUGIN_DNS" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_EJBCA" != "FALSE" ]] && [[ "$PLUGIN_EJBCA" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_FUSIONINVENTORY" != "FALSE" ]] && [[ "$PLUGIN_FUSIONINVENTORY" != "false" ]];  then
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_GPG" != "FALSE" ]] && [[ "$PLUGIN_GPG" != "false" ]];  then
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_IPMI" != "FALSE" ]] && [[ "$PLUGIN_IPMI" != "false" ]];  then
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_NETGROUPS" != "FALSE" ]] && [[ "$PLUGIN_NETGROUPS" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_PPOLICY" != "FALSE" ]] && [[ "$PLUGIN_PPOLICY" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_QUOTA" != "FALSE" ]] && [[ "$PLUGIN_QUOTA" != "false" ]];  then
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_REPOSITORY" != "FALSE" ]] && [[ "$PLUGIN_REPOSITORY" != "false" ]];  then
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_SQUID" != "FALSE" ]] && [[ "$PLUGIN_SQUID" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_SUDO" != "FALSE" ]] && [[ "$PLUGIN_SUDO" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_WEBLINK" != "FALSE" ]] && [[ "$PLUGIN_WEBLINK" != "false" ]];  then
+    :
+  fi
+
+ 
+  
+  if [[ "$PLUGIN_DEBCONF" != "FALSE" ]] && [[ "$PLUGIN_DEBCONF" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_FAI" != "FALSE" ]] && [[ "$PLUGIN_FAI" != "false" ]];  then
+    export PLUGIN_ARGONAUT=TRUE
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_OPSI" != "FALSE" ]] && [[ "$PLUGIN_OPSI" != "false" ]];  then
+    export PLUGIN_ARGONAUT=TRUE
+    export PLUGIN_DNS=TRUE
+    export PLUGIN_SAMBA=TRUE
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_PUPPET" != "FALSE" ]] && [[ "$PLUGIN_PUPPET" != "false" ]];  then
+    :
+  fi
+
+ 
+  
+  if [[ "$PLUGIN_ARGONAUT" != "FALSE" ]] && [[ "$PLUGIN_SYSTEMS" != "false" ]];  then
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_SYSTEMS" != "FALSE" ]] && [[ "$PLUGIN_SYSTEMS" != "false" ]];  then
+    export PLUGIN_ARGONAUT=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_SAMBA" != "FALSE" ]] && [[ "$PLUGIN_SAMBA" != "false" ]];  then
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+ 
+  
+  if [[ "$PLUGIN_CERTIFICATES" != "FALSE" ]] && [[ "$PLUGIN_CERTIFICATES" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_FREERADIUS" != "FALSE" ]] && [[ "$PLUGIN_FREERADIUS" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_MIXEDGROUPS" != "FALSE" ]] && [[ "$PLUGIN_MIXEDGROUPS" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_NAGIOS" != "FALSE" ]] && [[ "$PLUGIN_MIXEDGROUPS" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_NEWSLETTER" != "FALSE" ]] && [[ "$PLUGIN_NEWSLETTER" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_PERSONAL" != "FALSE" ]] && [[ "$PLUGIN_PERSONAL" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_PUREFTPD" != "FALSE" ]] && [[ "$PLUGIN_PUREFTPD" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_QUOTA" != "FALSE" ]] && [[ "$PLUGIN_QUOTA" != "false" ]];  then
+    export PLUGIN_SYSTEMS=TRUE
+  fi
+
+  
+  if [[ "$PLUGIN_SUBCONTRACTING" != "FALSE" ]] && [[ "$PLUGIN_SUBCONTRACTING" != "false" ]];  then
+    :
+  fi
+
+  
+  if [[ "$PLUGIN_SUPANN" != "FALSE" ]] && [[ "$PLUGIN_SUPANN" != "false" ]];  then
+    :
+  fi
+
+  
+
+
+  rm -R /tmp/fd-plugins 
+  cp -R /usr/src/fusiondirectory-plugins  /tmp/fd-plugins
+
+  if [ "$PLUGIN_ALIAS" != "TRUE" ]; then rm -rf /tmp/fd-plugins/alias ; fi;
+  if [ "$PLUGIN_APPLICATIONS" != "TRUE" ]; then rm -rf /tmp/fd-plugins/applications ; fi;
+  if [ "$PLUGIN_ARGONAUT" != "TRUE" ]; then rm -rf /tmp/fd-plugins/argonaut ; fi;
+  if [ "$PLUGIN_AUDIT" != "TRUE" ]; then rm -rf /tmp/fd-plugins/audit ; fi;
+  if [ "$PLUGIN_AUTOFS" != "TRUE" ]; then rm -rf /tmp/fd-plugins/autofs ; fi;
+  if [ "$PLUGIN_CERTIFICATES" != "TRUE" ]; then rm -rf /tmp/fd-plugins/certificates ; fi;
+  if [ "$PLUGIN_COMMUNITY" != "TRUE" ]; then rm -rf /tmp/fd-plugins/community ; fi;
+  if [ "$PLUGIN_CYRUS" != "TRUE" ]; then rm -rf /tmp/fd-plugins/cyrus ; fi;
+  if [ "$PLUGIN_DEBCONF" != "TRUE" ]; then rm -rf /tmp/fd-plugins/debconf ; fi;
+  if [ "$PLUGIN_DEVELOPERS" != "TRUE" ]; then rm -rf /tmp/fd-plugins/developers ; fi;
+  if [ "$PLUGIN_DHCP" != "TRUE" ]; then rm -rf /tmp/fd-plugins/dhcp ; fi;
+  if [ "$PLUGIN_DNS" != "TRUE" ]; then rm -rf /tmp/fd-plugins/dns ; fi;
+  if [ "$PLUGIN_DOVECOT" != "TRUE" ]; then rm -rf /tmp/fd-plugins/dovecot ; fi;
+  if [ "$PLUGIN_DSA" != "TRUE" ]; then rm -rf /tmp/fd-plugins/dsa ; fi;
+  if [ "$PLUGIN_EJBCA" != "TRUE" ]; then rm -rf /tmp/fd-plugins/ejbca ; fi;
+  if [ "$PLUGIN_FAI" != "TRUE" ]; then rm -rf /tmp/fd-plugins/fai ; fi;
+  if [ "$PLUGIN_FREERADIUS" != "TRUE" ]; then rm -rf /tmp/fd-plugins/freeradius ; fi;
+  if [ "$PLUGIN_FUSIONINVENTORY" != "TRUE" ]; then rm -rf /tmp/fd-plugins/fusioninventory ; fi;
+  if [ "$PLUGIN_GPG" != "TRUE" ]; then rm -rf /tmp/fd-plugins/gpg ; fi;
+  if [ "$PLUGIN_IPMI" != "TRUE" ]; then rm -rf /tmp/fd-plugins/ipmi ; fi;
+  if [ "$PLUGIN_LDAPDUMP" != "TRUE" ]; then rm -rf /tmp/fd-plugins/ldapdump ; fi;
+  if [ "$PLUGIN_LDAPMANAGER" != "TRUE" ]; then rm -rf /tmp/fd-plugins/ldapmanager ; fi;
+  if [ "$PLUGIN_MAIL" != "TRUE" ]; then rm -rf /tmp/fd-plugins/mail ; fi;
+  if [ "$PLUGIN_MIXEDGROUPS" != "TRUE" ]; then rm -rf /tmp/fd-plugins/mixedgroups ; fi;
+  if [ "$PLUGIN_NAGIOS" != "TRUE" ]; then rm -rf /tmp/fd-plugins/nagios ; fi;
+  if [ "$PLUGIN_NETGROUPS" != "TRUE" ]; then rm -rf /tmp/fd-plugins/netgroups ; fi;
+  if [ "$PLUGIN_NEWSLETTER" != "TRUE" ]; then rm -rf /tmp/fd-plugins/newsletter ; fi;
+  if [ "$PLUGIN_OPSI" != "TRUE" ]; then rm -rf /tmp/fd-plugins/opsi ; fi;
+  if [ "$PLUGIN_PERSONAL" != "TRUE" ]; then rm -rf /tmp/fd-plugins/personal ; fi;
+  if [ "$PLUGIN_POSIX" != "TRUE" ]; then rm -rf /tmp/fd-plugins/posix ; fi;
+  if [ "$PLUGIN_POSTFIX" != "TRUE" ]; then rm -rf /tmp/fd-plugins/postfix ; fi;
+  if [ "$PLUGIN_PPOLICY" != "TRUE" ]; then rm -rf /tmp/fd-plugins/ppolicy ; fi;
+  if [ "$PLUGIN_PUPPET" != "TRUE" ]; then rm -rf /tmp/fd-plugins/puppet ; fi;
+  if [ "$PLUGIN_PUREFTPD" != "TRUE" ]; then rm -rf /tmp/fd-plugins/pureftpd ; fi;
+  if [ "$PLUGIN_QUOTA" != "TRUE" ]; then rm -rf /tmp/fd-plugins/quota ; fi;
+  if [ "$PLUGIN_RENATER_PARTAGE" != "TRUE" ]; then rm -rf /tmp/fd-plugins/renater-partage ; fi;
+  if [ "$PLUGIN_REPOSITORY" != "TRUE" ]; then rm -rf /tmp/fd-plugins/repository ; fi;
+  if [ "$PLUGIN_SAMBA" != "TRUE" ]; then rm -rf /tmp/fd-plugins/samba ; fi;
+  if [ "$PLUGIN_SOGO" != "TRUE" ]; then rm -rf /tmp/fd-plugins/sogo ; fi;
+  if [ "$PLUGIN_SPAMASSASSIN" != "TRUE" ]; then rm -rf /tmp/fd-plugins/spamassassin ; fi;
+  if [ "$PLUGIN_SQUID" != "TRUE" ]; then rm -rf /tmp/fd-plugins/squid ; fi;
+  if [ "$PLUGIN_SSH" != "TRUE" ]; then rm -rf /tmp/fd-plugins/ssh ; fi;
+  if [ "$PLUGIN_SUBCONTRACTING" != "TRUE" ]; then rm -rf /tmp/fd-plugins/subcontracting ; fi;
+  if [ "$PLUGIN_SUDO" != "TRUE" ]; then rm -rf /tmp/fd-plugins/sudo ; fi;
+  if [ "$PLUGIN_SUPANN" != "TRUE" ]; then rm -rf /tmp/fd-plugins/supann ; fi;
+  if [ "$PLUGIN_SYMPA" != "TRUE" ]; then rm -rf /tmp/fd-plugins/sympa ; fi;
+  if [ "$PLUGIN_SYSTEMS" != "TRUE" ]; then rm -rf /tmp/fd-plugins/systems ; fi;
+  if [ "$PLUGIN_USER_REMINDER" != "TRUE" ]; then rm -rf /tmp/fd-plugins/user-reminder ; fi;
+  if [ "$PLUGIN_WEBLINK" != "TRUE" ]; then rm -rf /tmp/fd-plugins/weblink ; fi;
+  if [ "$PLUGIN_WEBSERVICE" != "TRUE" ]; then rm -rf /tmp/fd-plugins/webservice ; fi;
+  
+  
+
+fd_apply() {
+  
+  if [ ! -e ${FUSIONDIRECTORY_INSTALLED} ]; then
+      A="A"
+      ARG="-i"
+  else
+    if [ "$REAPPLY_PLUGIN_SCHEMAS" = "TRUE" ] || [ "$REAPPLY_PLUGIN_SCHEMAS" = "true" ];  then
+        RE="Re"
+        A="a"
+        ARG="-m"
+      else 
+        A="A"
+        ARG="-i"
+      fi
+  fi
+  
+  
+  echo "** [openldap-fusiondirectory] ${RE}${A}pplying Fusion Directory "$@" schema"
+}
+
+
+  /usr/sbin/slapd -h "ldapi://%2Frun%2Fopenldap%2Fldapi.sock" 
+
+  if [ "$REAPPLY_PLUGIN_SCHEMAS" = "TRUE" ] || [ "$REAPPLY_PLUGIN_SCHEMAS" = "true" ];  then
+  	fd_apply core
+  	fusiondirectory-insert-schema -m core*.schema
+  	fusiondirectory-insert-schema -m ldapns.schema
+  	fusiondirectory-insert-schema -m template-fd.schema
+  fi
+
+  if [[ "$PLUGIN_MAIL" != "FALSE" ]] && [[ "$PLUGIN_MAIL" != "false" ]];  then
+    fd_apply mail
+    fusiondirectory-insert-schema $ARG mail*.schema
+  fi
+  
+  if [[ "$PLUGIN_SYSTEMS" != "FALSE" ]] && [[ "$PLUGIN_SYSTEMS" != "false" ]];  then
+    fd_apply systems
+    fusiondirectory-insert-schema $ARG service*.schema
+    fusiondirectory-insert-schema $ARG systems*.schema
+  fi
+  if [[ "$PLUGIN_AUDIT" != "FALSE" ]] && [[ "$PLUGIN_AUDIT" != "false" ]];  then
+    fd_apply audit
+    fusiondirectory-insert-schema $ARG audit*.schema
+  fi
+
+  if [[ "$PLUGIN_ALIAS" != "FALSE" ]] && [[ "$PLUGIN_ALIAS" != "false" ]];  then
+    fd_apply alias
+    fusiondirectory-insert-schema $ARG alias*.schema
+  fi
+  
+  if [[ "$PLUGIN_APPLICATIONS" != "FALSE" ]] && [[ "$PLUGIN_APPLICATIONS" != "false" ]];  then
+    fd_apply applications
+    fusiondirectory-insert-schema $ARG applications*.schema
+  fi
+
+  if [[ "$PLUGIN_ARGONAUT" != "FALSE" ]] && [[ "$PLUGIN_ARGONAUT" != "false" ]];  then
+    fd_apply argonaut
+    fusiondirectory-insert-schema $ARG argonaut*.schema
+  fi
+  
+  if [[ "$PLUGIN_COMMUNITY" != "FALSE" ]] && [[ "$PLUGIN_COMMUNITY" != "false" ]];  then
+  	fd_apply community
+    fusiondirectory-insert-schema $ARG community*.schema
+  fi
+
+  if [[ "$PLUGIN_CYRUS" != "FALSE" ]] && [[ "$PLUGIN_CYRUS" != "false" ]];  then
+    fd_apply cyrus
+    fusiondirectory-insert-schema $ARG cyrus*.schema
+  fi
+
+  if [[ "$PLUGIN_DEBCONF" != "FALSE" ]] && [[ "$PLUGIN_DEBCONF" != "false" ]];  then
+    fd_apply debconf
+    fusiondirectory-insert-schema $ARG debconf*.schema
+  fi
+
+  if [[ "$PLUGIN_DHCP" != "FALSE" ]] && [[ "$PLUGIN_DHCP" != "false" ]];  then
+    fd_apply DHCP
+    fusiondirectory-insert-schema $ARG dhcp*.schema
+  fi
+
+  if [[ "$PLUGIN_DNS" != "FALSE" ]] && [[ "$PLUGIN_DNS" != "false" ]];  then
+    fd_apply DNS
+    fusiondirectory-insert-schema $ARG dns*.schema
+  fi
+
+  if [[ "$PLUGIN_DOVECOT" != "FALSE" ]] && [[ "$PLUGIN_DOVECOT" != "false" ]];  then
+    fd_apply dovecot
+    fusiondirectory-insert-schema $ARG dovecot*.schema
+  fi
+
+  if [[ "$PLUGIN_DSA" != "FALSE" ]] && [[ "$PLUGIN_DSA" != "false" ]];  then
+    fd_apply DSA
+    fusiondirectory-insert-schema $ARG dsa*.schema
+  fi
+
+  if [[ "$PLUGIN_EJBCA" != "FALSE" ]] && [[ "$PLUGIN_EJBCA" != "false" ]];  then
+    fd_apply ejbca
+    fusiondirectory-insert-schema $ARG ejbca*.schema
+  fi
+
+  if [[ "$PLUGIN_FAI" != "FALSE" ]] && [[ "$PLUGIN_FAI" != "false" ]];  then
+    fd_apply FAI
+    fusiondirectory-insert-schema $ARG fai*.schema
+  fi
+
+  if [[ "$PLUGIN_FREERADIUS" != "FALSE" ]] && [[ "$PLUGIN_FREERADIUS" != "false" ]];  then
+    fd_apply FreeRadius
+    fusiondirectory-insert-schema $ARG freeradius*.schema
+  fi
+
+  if [[ "$PLUGIN_FUSIONINVENTORY" != "FALSE" ]] && [[ "$PLUGIN_FUSIONINVENTORY" != "false" ]];  then
+    fd_apply Inventory
+    fusiondirectory-insert-schema $ARG fusioninventory*.schema
+    fusiondirectory-insert-schema $ARG inventory*.schema
+  fi
+
+  if [[ "$PLUGIN_GPG" != "FALSE" ]] && [[ "$PLUGIN_GPG" != "false" ]];  then
+    fd_apply GPG
+    fusiondirectory-insert-schema $ARG gpg*.schema
+    fusiondirectory-insert-schema $ARG pgp*.schema
+  fi
+
+  if [[ "$PLUGIN_IPMI" != "FALSE" ]] && [[ "$PLUGIN_IPMI" != "false" ]];  then
+    fd_apply IPMI
+    fusiondirectory-insert-schema $ARG ipmi*.schema
+  fi
+
+  if [[ "$PLUGIN_NAGIOS" != "FALSE" ]] && [[ "$PLUGIN_MIXEDGROUPS" != "false" ]];  then
+    fd_apply Nagios
+    fusiondirectory-insert-schema $ARG nagios*.schema
+    fusiondirectory-insert-schema $ARG netways*.schema
+  fi
+
+  if [[ "$PLUGIN_NETGROUPS" != "FALSE" ]] && [[ "$PLUGIN_NETGROUPS" != "false" ]];  then
+    fd_apply Netgroups
+    fusiondirectory-insert-schema $ARG netgroups*.schema
+  fi
+
+  if [[ "$PLUGIN_NEWSLETTER" != "FALSE" ]] && [[ "$PLUGIN_NEWSLETTER" != "false" ]];  then
+    fd_apply Newsletter
+    fusiondirectory-insert-schema $ARG newsletter*.schema
+  fi
+
+  if [[ "$PLUGIN_OPSI" != "FALSE" ]] && [[ "$PLUGIN_OPSI" != "false" ]];  then
+    fd_apply OPSI
+    fusiondirectory-insert-schema $ARG opsi*.schema
+  fi
+
+  if [[ "$PLUGIN_PPOLICY" != "FALSE" ]] && [[ "$PLUGIN_PPOLICY" != "false" ]];  then
+    fd_apply ppolicy
+    fusiondirectory-insert-schema $ARG ppolicy*.schema
+  fi
+
+  if [[ "$PLUGIN_QUOTA" != "FALSE" ]] && [[ "$PLUGIN_QUOTA" != "false" ]];  then
+    fd_apply Quota
+    fusiondirectory-insert-schema $ARG quota*.schema
+  fi
+
+  if [[ "$PLUGIN_PUPPET" != "FALSE" ]] && [[ "$PLUGIN_PUPPET" != "false" ]];  then
+    fd_apply puppet
+    fusiondirectory-insert-schema $ARG puppet*.schema
+  fi
+
+  if [[ "$PLUGIN_REPOSITORY" != "FALSE" ]] && [[ "$PLUGIN_REPOSITORY" != "false" ]];  then
+    fd_apply Repository
+    fusiondirectory-insert-schema $ARG repository*.schema
+  fi
+
+  if [[ "$PLUGIN_SAMBA" != "FALSE" ]] && [[ "$PLUGIN_SAMBA" != "false" ]];  then
+    fd_apply Samba
+    fusiondirectory-insert-schema $ARG samba*.schema
+  fi
+  
+  if [[ "$PLUGIN_PERSONAL" != "FALSE" ]] && [[ "$PLUGIN_PERSONAL" != "false" ]];  then
+    fd_apply Personal
+    fusiondirectory-insert-schema $ARG personal*.schema
+  fi
+
+  if [[ "$PLUGIN_POSTFIX" != "FALSE" ]] && [[ "$PLUGIN_POSTFIX" != "false" ]];  then
+    fd_apply Postfix
+    fusiondirectory-insert-schema $ARG postfix*.schema
+  fi
+
+  if [[ "$PLUGIN_PUREFTPD" != "FALSE" ]] && [[ "$PLUGIN_PUREFTPD" != "false" ]];  then
+    fd_apply PureFTPd
+    fusiondirectory-insert-schema $ARG pureftpd*.schema
+  fi
+
+  if [[ "$PLUGIN_SSH" != "FALSE" ]] && [[ "$PLUGIN_SSH" != "false" ]];  then
+    fd_apply SSH
+    fusiondirectory-insert-schema $ARG openssh*.schema
+  fi
+
+  if [[ "$PLUGIN_SOGO" != "FALSE" ]] && [[ "$PLUGIN_SOGO" != "false" ]];  then
+    fd_apply SoGo
+    fusiondirectory-insert-schema $ARG sogo*.schema
+    fusiondirectory-insert-schema $ARG cal*.schema
+  fi
+
+  if [[ "$PLUGIN_SPAMASSASSIN" != "FALSE" ]] && [[ "$PLUGIN_SPAMASSASSIN" != "false" ]];  then
+    fd_apply Spamassassin
+    fusiondirectory-insert-schema $ARG spamassassin*.schema
+  fi
+
+  if [[ "$PLUGIN_SQUID" != "FALSE" ]] && [[ "$PLUGIN_SQUID" != "false" ]];  then
+    fd_apply Squid
+    fusiondirectory-insert-schema $ARG proxy*.schema
+  fi
+
+  if [[ "$PLUGIN_SUBCONTRACTING" != "FALSE" ]] && [[ "$PLUGIN_SUBCONTRACTING" != "false" ]];  then
+    fd_apply Subcontracting
+    fusiondirectory-insert-schema $ARG subcontracting*.schema
+  fi
+
+  if [[ "$PLUGIN_SUDO" != "FALSE" ]] && [[ "$PLUGIN_SUDO" != "false" ]];  then
+    fd_apply sudo
+    fusiondirectory-insert-schema $ARG sudo*.schema
+  fi
+
+  if [[ "$PLUGIN_SUPANN" != "FALSE" ]] && [[ "$PLUGIN_SUPANN" != "false" ]];  then
+    fd_apply supann
+    fusiondirectory-insert-schema $ARG internet2*.schema
+    fusiondirectory-insert-schema $ARG supann*.schema
+  fi
+
+  if [[ "$PLUGIN_SYMPA" != "FALSE" ]] && [[ "$PLUGIN_SYMPA" != "false" ]];  then
+    fd_apply Sympa
+    fusiondirectory-insert-schema $ARG sympa*.schema
+  fi
+
+  if [[ "$PLUGIN_USER_REMINDER" != "FALSE" ]] && [[ "$PLUGIN_USER_REMINDER" != "false" ]];  then
+    fd_apply reminder
+    fusiondirectory-insert-schema $ARG user-reminder*.schema
+  fi
+
+  if [[ "$PLUGIN_WEBLINK" != "FALSE" ]] && [[ "$PLUGIN_WEBLINK" != "false" ]];  then
+  	fd_apply weblink
+    fusiondirectory-insert-schema $ARG weblink*.schema
+  fi
+
+    fd_apply webservice
+  if [[ "$PLUGIN_WEBSERVICE" != "FALSE" ]] && [[ "$PLUGIN_WEBSERVICE" != "false" ]];  then
+    fusiondirectory-insert-schema $ARG webservice*.schema
+  fi
+
+  tar -czf /tmp/fd-plugins.tar.gz /tmp/fd-plugins 
+
+  echo '/tmp/fd-plugins.tar.gz' | fusiondirectory-setup  --set-fd_smarty_dir="/usr/share/php/smarty3/Smarty.class.php" --write-vars --install-plugins --check-directories --update-locales --update-cache
+  
+
+  touch $FUSIONDIRECTORY_INSTALLED 
+
+  
+fi

@@ -1,0 +1,88 @@
+#!/usr/bin/with-contenv bash
+
+
+ulimit -n 1024
+
+
+[ -d /var/lib/openldap ] || mkdir -p /var/lib/openldap
+[ -d /run/openldap ] || mkdir -p /run/openldap
+[ -d /etc/openldap/slapd.d ] || mkdir -p /etc/openldap/slapd.d
+[ -d /etc/openldap/state ] || mkdir -p /etc/openldap/state
+
+
+chown -R ldap:ldap /var/lib/openldap
+chown -R ldap:ldap /etc/openldap
+chown -R ldap:ldap /run/openldap
+
+
+FIRST_START_DONE_T1="/etc/openldap/state/base"
+FIRST_START_DONE_T2="/var/lib/openldap/base"
+
+
+if [ ! -f "$FIRST_START_DONE_T1" ] && [ ! -f "$FIRST_START_DONE_T2" ]; then
+  if [ -z "$BASE_DN" ]; then
+    BASE_DN="dc="$( echo $DOMAIN | sed -e "s/\./,dc=/g" )
+    ROOT=$( echo $DOMAIN | cut -d '.' -f1 )
+  fi
+
+  CONFIG_PASS_HASH=$(slappasswd -s "$CONFIG_PASS" )
+  ADMIN_PASS_HASH=$(slappasswd -s "$ADMIN_PASS" )
+  FD_PASS_HASH=$(slappasswd -s "$FD_PASS" )
+
+  /usr/bin/schema2ldif /etc/openldap/schema/core.schema > /etc/openldap/schema/core.ldif
+  /usr/bin/schema2ldif /etc/openldap/schema/cosine.schema > /etc/openldap/schema/cosine.ldif
+  /usr/bin/schema2ldif /etc/openldap/schema/inetorgperson.schema > /etc/openldap/schema/inetorgperson.ldif
+  /usr/bin/schema2ldif /etc/openldap/schema/nis.schema > /etc/openldap/schema/nis.ldif
+
+  sed -i "s;{CONFIG_PASS};$CONFIG_PASS_HASH;g" /tmp/base.ldif
+  sed -i "s;{ADMIN_PASS};$ADMIN_PASS_HASH;g" /tmp/base.ldif
+  sed -i "s;{BASE_DN};$BASE_DN;g" /tmp/base.ldif
+
+  slapadd -n 0 -F /etc/openldap/slapd.d -l /tmp/base.ldif
+  /usr/sbin/slapd -h "ldapi://%2Frun%2Fopenldap%2Fldapi.sock" 
+  fusiondirectory-insert-schema 
+  fusiondirectory-insert-schema -i core*.schema
+  fusiondirectory-insert-schema -i ldapns.schema
+  fusiondirectory-insert-schema -i template-fd.schema
+  killall slapd
+
+
+  CN_ADMIN="cn=admin,ou=aclroles,${BASE_DN}"
+	CN_ADMIN_BS64=$(echo -n ${CN_ADMIN} | base64 | tr -d '\n')
+  UID_FD_ADMIN="uid=${FD_ADMIN},${BASE_DN}"
+	UID_FD_ADMIN_BS64=$(echo -n ${UID_FD_ADMIN} | base64 | tr -d '\n')
+
+  sed -i "s;{DOMAIN};$DOMAIN;g"  /tmp/fd.ldif
+  sed -i "s;{BASE_DN};$BASE_DN;g"  /tmp/fd.ldif
+  sed -i "s;{ROOT};$ROOT;g"  /tmp/fd.ldif
+  sed -i "s;{ADMIN_PASS};$ADMIN_PASS_HASH;g"  /tmp/fd.ldif
+  sed -i "s;{FD_ADMIN};$FD_ADMIN;g"  /tmp/fd.ldif
+  sed -i "s;{FD_PASS};$FD_PASS_HASH;g"  /tmp/fd.ldif
+  sed -i "s;{CN_ADMIN_BS64};$CN_ADMIN_BS64;g"  /tmp/fd.ldif
+  sed -i "s;{UID_FD_ADMIN_BS64};$UID_FD_ADMIN_BS64;g"  /tmp/fd.ldif
+
+  slapadd -F /etc/openldap/slapd.d -l /tmp/fd.ldif
+  set -e
+  chown -R ldap:ldap /etc/openldap 
+
+  echo "** [openldap] Configuring ldap client"
+  sed -i "s;{BASE_DN};$BASE_DN;g" /etc/openldap/ldap.conf
+  sed -i "s;{ADMIN_PASS};$ADMIN_PASS;g" /etc/openldap/ldap.conf
+
+  chmod 0600 /etc/openldap/ldap.conf
+  chown ldap:ldap /etc/openldap/ldap.conf
+
+  sed -i "s;{ADMIN_PASS};$ADMIN_PASS;g" /etc/fusiondirectory/fusiondirectory.conf
+  sed -i "s;{BASE_DN};$BASE_DN;g" /etc/fusiondirectory/fusiondirectory.conf
+  sed -i "s;{INSTANCE};$INSTANCE;g" /etc/fusiondirectory/fusiondirectory.conf
+
+  chmod 640 /etc/fusiondirectory/fusiondirectory.conf
+  chown root:www-data /etc/fusiondirectory/fusiondirectory.conf
+
+  rm -rf /tmp/fd.ldif
+  rm -rf /tmp/base.ldif
+
+  touch $FIRST_START_DONE_T1
+  touch $FIRST_START_DONE_T2
+fi
+

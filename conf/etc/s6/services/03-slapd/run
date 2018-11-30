@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv bash
+
+while [ ! -f /tmp/state/10-openldap-init ]
+do
+  sleep 1
+done
+
+ulimit -n 1024
+exec /usr/sbin/slapd -h "ldap://" -u ldap -g ldap -d $LOG_LEVEL

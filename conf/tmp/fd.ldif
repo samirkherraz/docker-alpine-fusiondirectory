@@ -1,0 +1,321 @@
+dn: {BASE_DN}
+o: {ROOT}
+dc: {ROOT}
+ou: {ROOT}
+description: {ROOT}
+structuralObjectClass: organization
+#entryUUID: 943f98d2-d56a-4e4e-82df-a3ecf2e4bfa7
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181126140603Z
+objectClass: dcObject
+objectClass: top
+objectClass: organization
+objectClass: gosaDepartment
+objectClass: gosaAcl
+gosaAclEntry: 0:subtree:{CN_ADMIN_BS64}:{UID_FD_ADMIN_BS64}
+#entryCSN: 20181126140619.394683Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181126140619Z
+
+
+#######################################
+#       GROUPS
+#######################################
+dn: ou=groups,{BASE_DN}
+objectClass: organizationalUnit
+ou: groups
+structuralObjectClass: organizationalUnit
+#entryUUID: d92e0b38-7f93-1038-97c6-356867f32f6d
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181118153915Z
+#entryCSN: 20181118153915.139002Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181118153915Z
+
+
+#######################################
+#       PEOPLE
+#######################################
+dn: ou=people,{BASE_DN}
+objectClass: organizationalUnit
+ou: people
+structuralObjectClass: organizationalUnit
+#entryUUID: 7d5e79af-d434-42b5-a81f-f589b9da90d1
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181126140619Z
+#entryCSN: 20181126140619.207699Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181126140619Z
+
+#######################################
+#       ADMIN
+#######################################
+dn: uid={FD_ADMIN},{BASE_DN}
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+cn: System Administrator
+sn: Administrator
+givenName: System
+uid: {FD_ADMIN}
+userPassword: {FD_PASS}
+structuralObjectClass: inetOrgPerson
+#entryUUID: c781a9e8-9545-4799-83a3-69f4ef0cc467
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181126140619Z
+#entryCSN: 20181126140619.324271Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181126140619Z
+
+
+#######################################
+#       SNAPSHOTS
+#######################################
+dn: ou=snapshots,{BASE_DN}
+objectClass: organizationalUnit
+ou: snapshots
+structuralObjectClass: organizationalUnit
+#entryUUID: b5a65fb2-7f93-1038-96c0-1bb71312298b
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181118153815Z
+#entryCSN: 20181118153815.529619Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181118153815Z
+
+
+#######################################
+#       FUSIONDIRECTORY
+#######################################
+dn: ou=fusiondirectory,{BASE_DN}
+objectClass: organizationalUnit
+ou: fusiondirectory
+structuralObjectClass: organizationalUnit
+#entryUUID: d7d9890d-6d20-4897-bbdb-e965b961b2df
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181126140603Z
+#entryCSN: 20181126140603.846163Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181126140603Z
+
+#######################################
+#       FUSIONDIRECTORY/RECOVERY
+#######################################
+dn: ou=recovery,ou=fusiondirectory,{BASE_DN}
+objectClass: organizationalUnit
+ou: recovery
+structuralObjectClass: organizationalUnit
+#entryUUID: bc151320-7f93-1038-97c3-356867f32f6d
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181118153826Z
+#entryCSN: 20181118153826.321438Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181118153826Z
+
+
+
+#######################################
+#       FUSIONDIRECTORY/TOKENS
+#######################################
+dn: ou=tokens,ou=fusiondirectory,{BASE_DN}
+objectClass: organizationalUnit
+ou: tokens
+structuralObjectClass: organizationalUnit
+#entryUUID: b59bb5b2-7f93-1038-96bd-1bb71312298b
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181118153815Z
+#entryCSN: 20181118153815.459731Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181118153815Z
+
+#######################################
+#       FUSIONDIRECTORY/LOCKS
+#######################################
+dn: ou=locks,ou=fusiondirectory,{BASE_DN}
+objectClass: organizationalUnit
+ou: locks
+structuralObjectClass: organizationalUnit
+#entryUUID: b5a421fc-7f93-1038-96bf-1bb71312298b
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181118153815Z
+#entryCSN: 20181118153815.514931Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181118153815Z
+
+#######################################
+#       FUSIONDIRECTORY/CONFIG
+#######################################
+dn: cn=config,ou=fusiondirectory,{BASE_DN}
+fdSchemaCheck: TRUE
+fdPasswordDefaultHash: ssha
+fdListSummary: TRUE
+fdModificationDetectionAttribute: #entryCSN
+fdLogging: TRUE
+fdLdapSizeLimit: 200
+fdLoginAttribute: uid
+fdWarnSSL: TRUE
+fdSessionLifeTime: 1800
+fdEnableSnapshots: TRUE
+fdSnapshotBase: ou=snapshots,{BASE_DN}
+fdSslKeyPath: /etc/ssl/private/fd.key
+fdSslCertPath: /etc/ssl/certs/fd.cert
+fdSslCaCertPath: /etc/ssl/certs/ca.cert
+fdCasHost: localhost
+fdCasPort: 443
+fdCasContext: /cas
+fdAccountPrimaryAttribute: uid
+fdCnPattern: %givenName% %sn%
+fdStrictNamingRules: TRUE
+fdMinId: 100
+fdUidNumberBase: 1100
+fdGidNumberBase: 1100
+fdUserRDN: ou=people
+fdGroupRDN: ou=groups
+fdAclRoleRDN: ou=aclroles
+fdIdAllocationMethod: traditional
+fdDebugLevel: 0
+fdShells: /bin/ash
+fdShells: /bin/bash
+fdShells: /bin/csh
+fdShells: /bin/sh
+fdShells: /bin/ksh
+fdShells: /bin/tcsh
+fdShells: /bin/dash
+fdShells: /bin/zsh
+fdShells: /sbin/nologin
+fdShells: /bin/false
+fdForcePasswordDefaultHash: FALSE
+fdHandleExpiredAccounts: FALSE
+fdForceSSL: FALSE
+fdHttpAuthActivated: FALSE
+fdRestrictRoleMembers: FALSE
+fdDisplayErrors: FALSE
+fdLdapStats: FALSE
+fdDisplayHookOutput: FALSE
+fdAclTabOnObjects: FALSE
+cn: config
+fdOGroupRDN: ou=groups
+fdForceSaslPasswordAsk: FALSE
+fdDashboardNumberOfDigit: 3
+fdDashboardPrefix: PC
+fdDashboardExpiredAccountsDays: 15
+fdPasswordRecoveryValidity: 10
+structuralObjectClass: fusionDirectoryConf
+#entryUUID: b59e072c-7f93-1038-96be-1bb71312298b
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181118153815Z
+fdTimezone: Europe/London
+objectClass: fusionDirectoryConf
+objectClass: fusionDirectoryPluginsConf
+objectClass: fdDashboardPluginConf
+objectClass: fdPasswordRecoveryConf
+fdPasswordRecoveryLoginAttribute: uid
+fdPasswordRecoveryActivated: TRUE
+fdPasswordRecoveryEmail: noreplay@{DOMAIN}
+fdPasswordRecoveryMailSubject: [{ROOT}] Password recovery link
+fdPasswordRecoveryMail2Subject: [{ROOT}] Password recovery successful
+fdPasswordRecoverySalt: test
+fdPasswordRecoveryUseAlternate: TRUE
+fdPasswordRecoveryMailBody:: SGVsbG8sCiAgICBBIHBhc3N3b3JkIHJlY292ZXJ5IGxpbms
+ gd2FzIGFza2VkIGZvciB5b3VyIGFjY291bnQgCkhlcmUgYXJlIHlvdXIgaW5mb3JtYXRpb25zID
+ ogCiAtIExvZ2luIDogJXMKIC0gTGluayA6ICVzClRoaXMgbGluayBpcyBvbmx5IHZhbGlkIGZvc
+ iAxMCBtaW51dGVzLgplUXVhbnR1bSBTZXJ2aWNlcw==
+fdPasswordRecoveryMail2Body:: SGVsbG8sCiAgICBZb3VyIHBhc3N3b3JkIGhhcyBiZWVuIG
+ NoYW5nZWQgIApIZXJlIGFyZSB5b3VyIGluZm9ybWF0aW9ucyA6IAogLSBMb2dpbiA6ICVzCmVRd
+ WFudHVtIFNlcnZpY2Vz
+fusionConfigMd5: d9b7821f751f05924ed214855fc14a0b
+fdTheme: breezy
+fdLanguage: fr_FR
+fdCasActivated: FALSE
+fdCasServerCaCertPath: /etc/ssl/certs/ca.cert
+#entryCSN: 20181118192111.309670Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181118192111Z
+
+
+
+
+#######################################
+#       ACLROLES
+#######################################
+dn: ou=aclroles,{BASE_DN}
+objectClass: organizationalUnit
+ou: aclroles
+structuralObjectClass: organizationalUnit
+#entryUUID: 6cf0af8f-289d-43e2-8c25-7beaf4cd3641
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181126140619Z
+#entryCSN: 20181126140619.113769Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181126140619Z
+
+#######################################
+#       ACLROLES/ADMIN
+#######################################
+dn: cn=admin,ou=aclroles,{BASE_DN}
+objectClass: top
+objectClass: gosaRole
+cn: admin
+description: Donne tous les droits sur tous les objets
+gosaAclTemplate: 0:all;cmdrw
+structuralObjectClass: gosaRole
+#entryUUID: d2c4b148-96e8-4d02-94f5-8f92224862a7
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181126140619Z
+#entryCSN: 20181126140619.168328Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181126140619Z
+
+#######################################
+#       ACLROLES/MANAGER
+#######################################
+dn: cn=manager,ou=aclroles,{BASE_DN}
+cn: manager
+description: Donner tous les droits aux utilisateurs sur cette branche
+objectClass: top
+objectClass: gosaRole
+gosaAclTemplate: 0:user/user;cmdrw,user/posixAccount;cmdrw
+structuralObjectClass: gosaRole
+#entryUUID: 7c44e79d-8ed0-48ed-acc7-a34a5c53c675
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181126140622Z
+#entryCSN: 20181126140622.414725Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181126140622Z
+
+#######################################
+#       ACLROLES/EDITOWNINFO
+#######################################
+dn: cn=editowninfos,ou=aclroles,{BASE_DN}
+cn: editowninfos
+description:: UGVybWV0IGF1eCB1dGlsaXNhdGV1cnMgZCfDqWRpdGVyIGxldXJzIHByb3ByZX
+ MgaW5mb3JtYXRpb25zIChvbmdsZXRzIGfDqW7DqXJpcXVlIGV0IHBvc2l4LCDDoCBuJ3V0aWxpc
+ 2VyIHF1ZSBzdXIgbGEgYmFzZSk=
+objectClass: top
+objectClass: gosaRole
+gosaAclTemplate: 0:user/user;srw,user/posixAccount;srw
+structuralObjectClass: gosaRole
+#entryUUID: 16373e15-24f4-47fb-adad-bd87f38c38bd
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181126140622Z
+#entryCSN: 20181126140622.481407Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181126140622Z
+
+
+#######################################
+#       ACLROLES/EDITOWNPASSWORD
+#######################################
+dn: cn=editownpwd,ou=aclroles,{BASE_DN}
+cn: editownpwd
+description:: UGVybWV0IGF1eCB1dGlsaXNhdGV1cnMgZGUgY2hhbmdlciBsZXVyIG1vdCBkZS
+ BwYXNzZSAow6AgbuKAmXV0aWxpc2VyIHF1ZSBzdXIgbGEgYmFzZSk=
+objectClass: top
+objectClass: gosaRole
+gosaAclTemplate: 0:user/user;s#userPassword;rw
+structuralObjectClass: gosaRole
+#entryUUID: 17ec24f2-904e-4d66-b2b0-5e0e45308930
+#creatorsName: cn=admin,{BASE_DN}
+#createTimestamp: 20181126140622Z
+#entryCSN: 20181126140622.525250Z#000000#000#000000
+#modifiersName: cn=admin,{BASE_DN}
+#modifyTimestamp: 20181126140622Z
