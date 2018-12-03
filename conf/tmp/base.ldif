@@ -54,7 +54,13 @@ olcDbIndex: objectClass eq
 
 
 dn: olcOverlay=memberof,olcDatabase=mdb,cn=config
-objectClass: olcOverlayConfig
+objectClass: olcConfig
 objectClass: olcMemberOf
+objectClass: olcOverlayConfig
+objectClass: top
 olcOverlay: memberof
-
+olcMemberOfDangling: ignore
+olcMemberOfRefInt: TRUE
+olcMemberOfGroupOC: groupOfNames
+olcMemberOfMemberAD: member
+olcMemberOfMemberOfAD: memberOf
