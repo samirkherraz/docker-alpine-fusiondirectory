@@ -1,9 +1,5 @@
 #!/usr/bin/with-contenv bash
 
-killall slapd
-
-rm /tmp/*.ldif
-
 chown -R ldap:ldap /var/lib/openldap
 chown -R ldap:ldap /etc/openldap
 chown -R ldap:ldap /run/openldap

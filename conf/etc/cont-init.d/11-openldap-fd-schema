@@ -603,6 +603,7 @@ fd_apply() {
 
   echo '/tmp/fd-plugins.tar.gz' | fusiondirectory-setup  --set-fd_smarty_dir="/usr/share/php/smarty3/Smarty.class.php" --write-vars --install-plugins --check-directories --update-locales --update-cache
   
+  killall slapd
 
   touch $FUSIONDIRECTORY_INSTALLED 
 

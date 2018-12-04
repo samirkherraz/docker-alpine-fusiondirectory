@@ -101,7 +101,7 @@ RUN set -x \
 
 # Install SLAPD
 RUN set -x \
-    && apk add perl bash openldap openldap-clients openldap-back-mdb openldap-overlay-memberof \
+    && apk add perl bash openldap openldap-clients openldap-back-mdb openldap-overlay-memberof openldap-overlay-refint  \
     && rm -R /var/lib/openldap /etc/openldap/*.*
 
 
