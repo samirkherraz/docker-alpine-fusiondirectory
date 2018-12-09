@@ -15,11 +15,10 @@ chown -R ldap:ldap /etc/openldap
 chown -R ldap:ldap /run/openldap
 
 
-FIRST_START_DONE_T1="/etc/openldap/state/base"
-FIRST_START_DONE_T2="/var/lib/openldap/base"
+FIRST_START_DONE="/var/lib/openldap/base"
 
 
-if [ ! -f "$FIRST_START_DONE_T1" ] && [ ! -f "$FIRST_START_DONE_T2" ]; then
+if [ ! -f "$FIRST_START_DONE" ]; then
   if [ -z "$BASE_DN" ]; then
     BASE_DN="dc="$( echo $DOMAIN | sed -e "s/\./,dc=/g" )
     ROOT=$( echo $DOMAIN | cut -d '.' -f1 )
@@ -89,7 +88,6 @@ if [ ! -f "$FIRST_START_DONE_T1" ] && [ ! -f "$FIRST_START_DONE_T2" ]; then
   rm -rf /tmp/fusiondirectory.ldif
   rm -rf /tmp/config.ldif
 
-  touch $FIRST_START_DONE_T1
-  touch $FIRST_START_DONE_T2
+  touch $FIRST_START_DONE
 fi
 
