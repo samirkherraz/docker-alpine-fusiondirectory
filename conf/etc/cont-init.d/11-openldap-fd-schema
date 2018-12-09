@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 
-FUSIONDIRECTORY_INSTALLED="/etc/openldap/state/fusiondirectory" 
+FUSIONDIRECTORY_INSTALLED="/var/lib/openldap/fusiondirectory"
 
 
 if [ ! -e ${FUSIONDIRECTORY_INSTALLED} ] || [ "$REAPPLY_PLUGIN_SCHEMAS" = "TRUE" ] || [ "$REAPPLY_PLUGIN_SCHEMAS" = "true" ];  then

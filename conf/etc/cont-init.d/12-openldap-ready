@@ -5,7 +5,8 @@ if [ -z "$BASE_DN" ]; then
     ROOT=$( echo $DOMAIN | cut -d '.' -f1 )
 fi
 
-echo "** [openldap] Configuring ldap client"
+cp /etc/template/ldap.conf /etc/openldap/ldap.conf
+
 sed -i "s;{BASE_DN};$BASE_DN;g" /etc/openldap/ldap.conf
 sed -i "s;{ADMIN_PASS};$ADMIN_PASS;g" /etc/openldap/ldap.conf
 
@@ -18,8 +19,6 @@ sed -i "s;{INSTANCE};$INSTANCE;g" /etc/fusiondirectory/fusiondirectory.conf
 
 chmod 640 /etc/fusiondirectory/fusiondirectory.conf
 chown root:nginx /etc/fusiondirectory/fusiondirectory.conf
-
-
 
 chown -R ldap:ldap /var/lib/openldap
 chown -R ldap:ldap /etc/openldap
