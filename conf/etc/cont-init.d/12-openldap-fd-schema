@@ -4,11 +4,10 @@
 FUSIONDIRECTORY_INSTALLED="/var/lib/openldap/fusiondirectory"
 
 
-if [ ! -e ${FUSIONDIRECTORY_INSTALLED} ] || [ "$REAPPLY_PLUGIN_SCHEMAS" = "TRUE" ] || [ "$REAPPLY_PLUGIN_SCHEMAS" = "true" ];  then
+if [ ! -f $FUSIONDIRECTORY_INSTALLED ];  then
   if [ -z "$BASE_DN" ]; then
     BASE_DN="dc="$( echo $DOMAIN | sed -e "s/\./,dc=/g" )
   fi
-
 
   PLUGIN_ALIAS=${PLUGIN_ALIAS:-"FALSE"}
   PLUGIN_APPLICATIONS=${PLUGIN_APPLICATIONS:-"FALSE"}

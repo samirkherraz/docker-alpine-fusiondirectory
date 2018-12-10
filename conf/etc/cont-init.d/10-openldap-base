@@ -68,26 +68,7 @@ if [ ! -f "$FIRST_START_DONE" ]; then
 
   slapadd -F /etc/openldap/slapd.d -l /tmp/fusiondirectory.ldif
   rm /tmp/fusiondirectory.ldif
-  set -e
-  chown -R ldap:ldap /etc/openldap 
-
-  echo "** [openldap] Configuring ldap client"
-  sed -i "s;{BASE_DN};$BASE_DN;g" /etc/openldap/ldap.conf
-  sed -i "s;{ADMIN_PASS};$ADMIN_PASS;g" /etc/openldap/ldap.conf
-
-  chmod 0600 /etc/openldap/ldap.conf
-  chown ldap:ldap /etc/openldap/ldap.conf
-
-  sed -i "s;{ADMIN_PASS};$ADMIN_PASS;g" /etc/fusiondirectory/fusiondirectory.conf
-  sed -i "s;{BASE_DN};$BASE_DN;g" /etc/fusiondirectory/fusiondirectory.conf
-  sed -i "s;{INSTANCE};$INSTANCE;g" /etc/fusiondirectory/fusiondirectory.conf
-
-  chmod 640 /etc/fusiondirectory/fusiondirectory.conf
-  chown root:www-data /etc/fusiondirectory/fusiondirectory.conf
-
-  rm -rf /tmp/fusiondirectory.ldif
-  rm -rf /tmp/config.ldif
-
+  
   touch $FIRST_START_DONE
 fi
 

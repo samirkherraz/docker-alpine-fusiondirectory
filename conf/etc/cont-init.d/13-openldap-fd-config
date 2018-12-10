@@ -1,0 +1,13 @@
+#!/usr/bin/with-contenv bash
+
+if [ -z "$BASE_DN" ]; then
+    BASE_DN="dc="$( echo $DOMAIN | sed -e "s/\./,dc=/g" )
+    ROOT=$( echo $DOMAIN | cut -d '.' -f1 )
+fi
+
+  sed -i "s;{ADMIN_PASS};$ADMIN_PASS;g" /etc/fusiondirectory/fusiondirectory.conf
+  sed -i "s;{BASE_DN};$BASE_DN;g" /etc/fusiondirectory/fusiondirectory.conf
+  sed -i "s;{INSTANCE};$INSTANCE;g" /etc/fusiondirectory/fusiondirectory.conf
+
+  chmod 640 /etc/fusiondirectory/fusiondirectory.conf
+  chown root:nginx /etc/fusiondirectory/fusiondirectory.conf
