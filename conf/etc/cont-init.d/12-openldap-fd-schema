@@ -4,7 +4,6 @@
 FUSIONDIRECTORY_INSTALLED="/var/lib/openldap/fusiondirectory"
 
 
-if [ ! -f $FUSIONDIRECTORY_INSTALLED ];  then
   if [ -z "$BASE_DN" ]; then
     BASE_DN="dc="$( echo $DOMAIN | sed -e "s/\./,dc=/g" )
   fi
@@ -355,18 +354,13 @@ if [ ! -f $FUSIONDIRECTORY_INSTALLED ];  then
 
 fd_apply() {
   
-  if [ ! -e ${FUSIONDIRECTORY_INSTALLED} ]; then
+  if [ ! -f ${FUSIONDIRECTORY_INSTALLED} ]; then
       A="A"
       ARG="-i"
   else
-    if [ "$REAPPLY_PLUGIN_SCHEMAS" = "TRUE" ] || [ "$REAPPLY_PLUGIN_SCHEMAS" = "true" ];  then
-        RE="Re"
-        A="a"
-        ARG="-m"
-      else 
-        A="A"
-        ARG="-i"
-      fi
+      RE="Re"
+      A="a"
+      ARG="-m"
   fi
   
   
@@ -606,5 +600,3 @@ fd_apply() {
 
   touch $FUSIONDIRECTORY_INSTALLED 
 
-  
-fi
