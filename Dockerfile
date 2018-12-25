@@ -12,21 +12,13 @@ ENV ADMIN_PASS=admin \
     SMARTY_VERSION=3.1.31 \
     SMARTYGETTEXT_VERSION=1.5.1 \
     INSTANCE=exemple \
-    MAIL_FROM_MAIL=admin@exemple.org \
-    MAIL_FROM_NAME=Administrator \
-    MAIL_SIGNATURE=Administrator \
     SMTP_HOST=localhost \
+    SMTP_PORT=587 \
+    SMTP_AUTH=on \
+    SMTP_TLS=on \
     SMTP_USER=username \
     SMTP_PASS=password \
-    SMTP_PORT=25 \
-    SSP_LANG=fr \
-    SSP_USE_CHANGE=false \
-    SSP_USE_SMS=false \
-    SSP_USE_TOKEN=true \
-    SSP_USE_QUESTION=false \
-    SSP_DEFAULT=sendtoken \
-    SSP_SHOW_MENU=false \
-    SSP_SHOW_HELP=false 
+    SMTP_FROM=admin@exemple.org 
 
 # maybe not php fpm but php cgi ( we will save a service )
 
@@ -172,12 +164,8 @@ RUN set -x \
 
 
 RUN set -x \
-    cd /tmp/ \
-    && wget http://ltb-project.org/archives/ltb-project-self-service-password-1.3.tar.gz \
-    && tar zxvf ltb-project-self-service-password-1.3.tar.gz \
-    && rm ltb-project-self-service-password-1.3.tar.gz \
-    && mv ltb-project-self-service-password-1.3 /var/www/fusiondirectory/html/ssp
-
+    && apk add msmtp \
+    && ln -sf /usr/bin/msmtp /usr/sbin/sendmail
 
 RUN set -x \
     && rm /etc/nginx/conf.d/*
