@@ -16,7 +16,7 @@ fi
   sed -i "s;{SMTP_PASS};$SMTP_PASS;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
   sed -i "s;{SMTP_PORT};$SMTP_PORT;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
   sed -i "s;{SSP_DEFAULT};$SSP_DEFAULT;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
-  sed -i "s;{SSP_USE_MAIL};$SSP_USE_MAIL;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{SSP_USE_MAIL};$SSP_USE_TOKEN;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
   sed -i "s;{SSP_USE_SMS};$SSP_USE_SMS;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
   sed -i "s;{SSP_USE_QUESTION};$SSP_USE_QUESTION;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
   sed -i "s;{SSP_USE_CHANGE};$SSP_USE_CHANGE;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
