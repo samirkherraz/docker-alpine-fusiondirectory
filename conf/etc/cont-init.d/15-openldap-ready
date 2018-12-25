@@ -4,6 +4,7 @@ chown -R ldap:ldap /var/lib/openldap
 chown -R ldap:ldap /etc/openldap
 chown -R ldap:ldap /run/openldap
 chown -R nginx:nginx /var/www/fusiondirectory/html 
+chown -R nginx:nginx /var/www/self-service-password
 
 chmod 777 /tmp
 mkdir -p /tmp/state

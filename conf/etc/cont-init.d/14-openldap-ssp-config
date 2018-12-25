@@ -1,0 +1,29 @@
+#!/usr/bin/with-contenv bash
+
+
+if [ -z "$BASE_DN" ]; then
+    BASE_DN="dc="$( echo $DOMAIN | sed -e "s/\./,dc=/g" )
+    ROOT=$( echo $DOMAIN | cut -d '.' -f1 )
+fi
+
+  sed -i "s;{ADMIN_PASS};$ADMIN_PASS;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{BASE_DN};$BASE_DN;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{MAIL_FROM_MAIL};$MAIL_FROM_MAIL;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{MAIL_FROM_NAME};$MAIL_FROM_NAME;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{MAIL_SIGNATURE};$MAIL_SIGNATURE;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{SMTP_HOST};$SMTP_HOST;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{SMTP_USER};$SMTP_USER;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{SMTP_PASS};$SMTP_PASS;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{SMTP_PORT};$SMTP_PORT;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  RANDOM=$(date +%s | sha256sum | base64 | head -c 32 ; echo)
+  sed -i "s;{RANDOM};$RANDOM;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+
+
+  if [ ! -z "$BACKGROUND_IMAGE" ];then 
+    wget $BACKGROUND_IMAGE -O  /var/www/fusiondirectory/html/ssp/images/background.png
+  fi
+
+  if [ ! -z "$LOGO_IMAGE" ];then 
+  wget $LOGO_IMAGE -O  /var/www/fusiondirectory/html/ssp/images/logo.png
+  fi
+

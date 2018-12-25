@@ -11,7 +11,14 @@ ENV ADMIN_PASS=admin \
     FD_PASS=admin \
     SMARTY_VERSION=3.1.31 \
     SMARTYGETTEXT_VERSION=1.5.1 \
-    INSTANCE=exemple 
+    INSTANCE=exemple \
+    MAIL_FROM_MAIL=admin@exemple.org \
+    MAIL_FROM_NAME=Administrator \
+    MAIL_SIGNATURE=Administrator \
+    SMTP_HOST=localhost \
+    SMTP_USER=username \
+    SMTP_PASS=password \
+    SMTP_PORT=25
 # maybe not php fpm but php cgi ( we will save a service )
 
 RUN set -x \
@@ -153,6 +160,15 @@ RUN set -x \
     && touch /etc/debian_version \
     && yes Yes | fusiondirectory-setup --check-directories --update-cache \
     && rm -rf /usr/src/fusiondirectory
+
+
+RUN set -x \
+    cd /tmp/ \
+    && wget http://ltb-project.org/archives/ltb-project-self-service-password-1.3.tar.gz \
+    && tar zxvf ltb-project-self-service-password-1.3.tar.gz \
+    && rm ltb-project-self-service-password-1.3.tar.gz \
+    && mv ltb-project-self-service-password-1.3 /var/www/fusiondirectory/html/ssp
+
 
 RUN set -x \
     && rm /etc/nginx/conf.d/*
