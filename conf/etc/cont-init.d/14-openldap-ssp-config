@@ -24,6 +24,6 @@ fi
   fi
 
   if [ ! -z "$LOGO_IMAGE" ];then 
-  wget $LOGO_IMAGE -O  /var/www/fusiondirectory/html/ssp/images/logo.png
+    wget $LOGO_IMAGE -O  /var/www/fusiondirectory/html/ssp/images/logo.png
   fi
 
