@@ -254,7 +254,7 @@ $lang = "{SSP_LANG}";
 $allowed_lang = array();
 
 # Display menu on top
-$show_menu = {SSH_SHOW_MENU};
+$show_menu = {SSP_SHOW_MENU};
 
 # Logo
 $logo = "images/logo.png";
