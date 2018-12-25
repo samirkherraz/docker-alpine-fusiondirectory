@@ -10,7 +10,7 @@ fi
   sed -i "s;{INSTANCE};$INSTANCE;g" /etc/fusiondirectory/fusiondirectory.conf
 
   sed -i "s;{SMTP_HOST};$SMTP_HOST;g" /etc/msmtprc
-  sed -i "s;{SMTP_PORT;$SMTP_PORT;g" /etc/msmtprc
+  sed -i "s;{SMTP_PORT};$SMTP_PORT;g" /etc/msmtprc
   sed -i "s;{SMTP_AUTH};$SMTP_AUTH;g" /etc/msmtprc
   sed -i "s;{SMTP_TLS};$SMTP_TLS;g" /etc/msmtprc
   sed -i "s;{SMTP_USER};$SMTP_USER;g" /etc/msmtprc
