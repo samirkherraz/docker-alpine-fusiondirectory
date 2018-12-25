@@ -129,7 +129,7 @@ $who_change_password = "user";
 
 ## Standard change
 # Use standard change form?
-$use_change = true;
+$use_change = {SSP_USE_CHANGE};
 
 ## SSH Key Change
 # Allow changing of sshPublicKey?
@@ -152,7 +152,7 @@ $notify_on_sshkey_change = false;
 # Use questions/answers?
 # true (default)
 # false
-$use_questions = true;
+$use_questions = {SSP_USE_QUESTION};
 
 # Answer attribute should be hidden to users!
 $answer_objectClass = "extensibleObject";
@@ -168,7 +168,7 @@ $crypt_answers = true;
 # Use tokens?
 # true (default)
 # false
-$use_tokens = true;
+$use_tokens = {SSP_USE_TOKEN};
 # Crypt tokens?
 # true (default)
 # false
@@ -198,7 +198,7 @@ $mail_smtp_host = '{SMTP_HOST}';
 $mail_smtp_auth = true;
 $mail_smtp_user = '{SMTP_USER}';
 $mail_smtp_pass = '{SMTP_PASS}';
-$mail_smtp_port = '{SMTP_PORT}';
+$mail_smtp_port = {SMTP_PORT};
 $mail_smtp_timeout = 30;
 $mail_smtp_keepalive = false;
 $mail_smtp_secure = 'tls';
@@ -211,7 +211,7 @@ $mail_newline = PHP_EOL;
 
 ## SMS
 # Use sms
-$use_sms = true;
+$use_sms = {SSP_USE_SMS};
 # SMS method (mail, api)
 $sms_method = "mail";
 $sms_api_lib = "lib/smsapi.inc.php";
@@ -244,17 +244,17 @@ $keyphrase = "{RANDOM}";
 #$reset_url = $_SERVER['HTTP_X_FORWARDED_PROTO'] . "://" . $_SERVER['HTTP_X_FORWARDED_HOST'] . $_SERVER['SCRIPT_NAME'];
 
 # Display help messages
-$show_help = true;
+$show_help = {SSP_SHOW_HELP};
 
 # Default language
-$lang = "en";
+$lang = "{SSP_LANG}";
 
 # List of authorized languages. If empty, all language are allowed.
 # If not empty and the user's browser language setting is not in that list, language from $lang will be used.
 $allowed_lang = array();
 
 # Display menu on top
-$show_menu = true;
+$show_menu = {SSH_SHOW_MENU};
 
 # Logo
 $logo = "images/logo.png";
@@ -289,7 +289,7 @@ $recaptcha_request_method = null;
 # change
 # sendtoken
 # sendsms
-$default_action = "change";
+$default_action = "{SSP_DEFAULT}";
 
 ## Extra messages
 # They can also be defined in lang/ files

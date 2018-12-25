@@ -18,7 +18,16 @@ ENV ADMIN_PASS=admin \
     SMTP_HOST=localhost \
     SMTP_USER=username \
     SMTP_PASS=password \
-    SMTP_PORT=25
+    SMTP_PORT=25 \
+    SSP_LANG=fr \
+    SSP_USE_CHANGE=false \
+    SSP_USE_SMS=false \
+    SSP_USE_MAIL=true \
+    SSP_USE_QUESTION=false \
+    SSP_DEFAULT=sendtoken \
+    SSP_SHOW_MENU=false \
+    SSP_SHOW_HELP=false 
+
 # maybe not php fpm but php cgi ( we will save a service )
 
 RUN set -x \

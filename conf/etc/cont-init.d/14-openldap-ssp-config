@@ -15,6 +15,14 @@ fi
   sed -i "s;{SMTP_USER};$SMTP_USER;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
   sed -i "s;{SMTP_PASS};$SMTP_PASS;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
   sed -i "s;{SMTP_PORT};$SMTP_PORT;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{SSP_DEFAULT};$SSP_DEFAULT;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{SSP_USE_MAIL};$SSP_USE_MAIL;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{SSP_USE_SMS};$SSP_USE_SMS;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{SSP_USE_QUESTION};$SSP_USE_QUESTION;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{SSP_USE_CHANGE};$SSP_USE_CHANGE;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{SSP_LANG};$SSP_LANG;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{SSP_SHOW_MENU};$SSP_SHOW_MENU;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
+  sed -i "s;{SSP_SHOW_HELP};$SSP_SHOW_HELP;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
   RANDOM=$(date +%s | sha256sum | base64 | head -c 32 ; echo)
   sed -i "s;{RANDOM};$RANDOM;g" /var/www/fusiondirectory/html/ssp/conf/config.inc.php
 
