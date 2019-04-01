@@ -1,3 +1,7 @@
 #!/usr/bin/with-contenv bash
 ulimit -n 1024
-service-handler "OPENLDAP" "/usr/sbin/slapd -h 'ldap://' -u ldap -g ldap -d $LOG_LEVEL" "/tmp/state/10-openldap-init"
+NAME="SLAPD"
+COMMAND="/usr/sbin/slapd -h 'ldap://' -u ldap -g ldap -d $LOG_LEVEL"
+WAIT="/tmp/state/10-openldap-init"
+
+exec service-handler "$NAME" "$COMMAND" "$WAIT"

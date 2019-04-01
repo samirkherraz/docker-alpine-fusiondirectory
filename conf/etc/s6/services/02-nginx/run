@@ -1,2 +1,7 @@
-#!/usr/bin/with-contenv sh
-service-handler "NGINX" "nginx -g 'daemon off;'"
+#!/bin/sh
+NAME="NGINX" 
+COMMAND="nginx -g 'daemon off;'" 
+WAIT="/tmp/state/10-openldap-init"
+
+
+exec service-handler "$NAME" "$COMMAND" "$WAIT"

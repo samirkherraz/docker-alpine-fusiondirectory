@@ -1,2 +1,6 @@
-#!/usr/bin/with-contenv sh
-service-handler "PHP-FPM" "php-fpm7 -F"
+#!/bin/sh
+NAME="PHP-FPM"
+COMMAND="php-fpm7 -F"
+WAIT="/tmp/state/10-openldap-init"
+
+exec service-handler "$NAME" "$COMMAND" "$WAIT"
