@@ -23,8 +23,7 @@ ENV ADMIN_PASS=admin \
 # maybe not php fpm but php cgi ( we will save a service )
 
 RUN set -x \
-    && apk update \
-    && apk add --virtual run-deps \
+    && apk add --no-cache \
     wget \
     curl \
     nginx \
@@ -63,7 +62,6 @@ RUN set -x \
 
 
 RUN set -x \
-    && apk update \
     && apk add --no-cache --virtual build-deps coreutils build-base make perl-dev \
     && curl -L http://cpanmin.us -o /usr/bin/cpanm \
     && chmod +x /usr/bin/cpanm \
@@ -84,7 +82,7 @@ RUN set -x \
     POE::Component::SSLify \
     XML::SAX::Expat \
     && cp -R /usr/local/share/perl5/site_perl/* /usr/share/perl5/vendor_perl/ \
-    && apk del build-deps curl wget coreutils build-base make perl-dev 
+    && apk del build-deps coreutils build-base make perl-dev 
 
 ## Install Smarty3
 RUN set -x \
@@ -109,7 +107,7 @@ RUN set -x \
 
 # Install SLAPD
 RUN set -x \
-    && apk add perl bash openldap openldap-clients openldap-back-mdb openldap-overlay-memberof openldap-overlay-refint  \
+    && apk --no-cache add perl bash openldap openldap-clients openldap-back-mdb openldap-overlay-memberof openldap-overlay-refint  \
     && rm -R /var/lib/openldap /etc/openldap/*.*
 
 
@@ -164,7 +162,7 @@ RUN set -x \
 
 
 RUN set -x \
-    && apk add msmtp \
+    && apk --no-cache add msmtp \
     && ln -sf /usr/bin/msmtp /usr/sbin/sendmail
 
 RUN set -x \
