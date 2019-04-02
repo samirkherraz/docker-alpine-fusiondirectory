@@ -9,8 +9,9 @@ ENV ADMIN_PASS=admin \
     SCHEMA2LDIF_VERSION=1.3 \
     FD_ADMIN=fd-admin \
     FD_PASS=admin \
-    SMARTY_VERSION=3.1.31 \
-    SMARTYGETTEXT_VERSION=1.5.1 \
+    FD_VERSION=1.3 \
+    SMARTY_VERSION=3.1.33 \
+    SMARTYGETTEXT_VERSION=1.6.1 \
     INSTANCE=exemple \
     SMTP_HOST=localhost \
     SMTP_PORT=587 \
@@ -114,9 +115,9 @@ RUN set -x \
 ## Install FusionDirectory
 RUN set -x \
     && mkdir -p /usr/src/fusiondirectory /usr/src/fusiondirectory-plugins \
-    && export URL=https://gitlab.fusiondirectory.org/fusiondirectory/fd/-/archive/master/fd-master.tar.gz \
+    && export URL=https://gitlab.fusiondirectory.org/fusiondirectory/fd/-/archive/fusiondirectory-1.3/fd-fusiondirectory-${FD_VERSION}.tar.gz \
     && curl $URL  | tar xvfz - --strip 1 -C /usr/src/fusiondirectory \
-    && export URL=https://gitlab.fusiondirectory.org/fusiondirectory/fd-plugins/-/archive/master/fd-plugins-master.tar.gz \
+    && export URL=https://gitlab.fusiondirectory.org/fusiondirectory/fd-plugins/-/archive/fusiondirectory-1.3/fd-plugins-fusiondirectory-${FD_VERSION}.tar.gz \
     && curl $URL | tar xvfz - --strip 1 -C /usr/src/fusiondirectory-plugins \
     && mkdir -p /etc/openldap/schema/fusiondirectory \
     && rm -rf /usr/src/fusiondirectory/contrib/openldap/rfc2307bis.schema \

@@ -2,6 +2,6 @@
 ulimit -n 1024
 NAME="SLAPD"
 COMMAND="/usr/sbin/slapd -h 'ldap://' -u ldap -g ldap -d $LOG_LEVEL"
-WAIT="/tmp/state/10-openldap-init"
+WAIT="/tmp/openldap-init"
 
 exec service-handler "$NAME" "$COMMAND" "$WAIT"

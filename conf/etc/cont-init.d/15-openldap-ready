@@ -6,5 +6,4 @@ chown -R ldap:ldap /run/openldap
 chown -R nginx:nginx /var/www/fusiondirectory/html 
 
 chmod 777 /tmp
-mkdir -p /tmp/state
-echo "0" > /tmp/state/10-openldap-init
+echo "0" > /tmp/openldap-init
