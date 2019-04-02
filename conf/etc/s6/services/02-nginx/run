@@ -1,5 +1,7 @@
 #!/bin/sh
 NAME="NGINX" 
 COMMAND="nginx -g 'daemon off;'" 
+WAIT="/tmp/openldap-init"
 
-exec service-handler "$NAME" "$COMMAND"
+
+exec service-handler "$NAME" "$COMMAND" "$WAIT"
