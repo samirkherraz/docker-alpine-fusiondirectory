@@ -1,3 +1,11 @@
+# !! IMPORTANT !! 
+This repository has been migrated to the newgeneration-sr account
+
+this repository is archived.
+
+For any contribution or issue, refer to the new repository !!!
+
+---
 # OpenLDAP + Fusiondirectory on Alpine Linux + S6 Overlay
 
 # Auto configuration parameters :
